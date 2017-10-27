@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context" xmlns:tx="http://www.springframework.org/schema/tx"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd">
+
+    <!-- 配置 spring 的注解扫描根目录 -->
+    <context:component-scan base-package="com.lanou"/>
+
+    <!-- 配置 hibernate -->
+
+    <!-- 1. 配置数据库连接池 -->
+    <bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource">
+        <!-- 数据库驱动 -->
+        <property name="driverClassName" value="com.mysql.jdbc.Driver"/>
+        <!-- 数据库地址 -->
+        <property name="url" value="jdbc:mysql://localhost:3306/newcrm"/>
+        <!-- 用户名 -->
+        <property name="username" value="root"/>
+        <!-- 用户密码 -->
+        <property name="password" value="123456"/>
+    </bean>
+
+    <!-- 2. 配置 sessionFactory -->
+    <bean id="sessionFactory" class="org.springframework.orm.hibernate4.LocalSessionFactoryBean">
+        <!-- 引入 dbcp 数据库连接池 -->
+        <property name="dataSource" ref="dataSource"/>
+        <!-- 配置 hibernate 属性 原 hibernate 配置文件中的可选项 -->
+        <property name="hibernateProperties">
+            <props>
+                <prop key="hibernate.show_sql">true</prop>
+                <prop key="hibernate.format_sql">true</prop>
+                <prop key="hibernate.hbm2ddl.auto">update</prop>
+                <prop key="hibernate.dialecta">org.hibernate.dialect.MySQLDialect</prop>
+                <!--<prop key="hibernate.current_session_context_class">thread</prop>-->
+            </props>
+        </property>
+
+        <!-- 加载实体类的 hibernate 映射文件
+            自动匹配 resources 目录下的所有 .hbm.xml 后缀的文件 -->
+        <property name="mappingLocations">
+            <list>
+                <value>classpath:resources/Crm_department.hbm.xml</value>
+                <value>classpath:resources/Crm_post.hbm.xml</value>
+                <value>classpath:resources/Crm_staff.hbm.xml</value>
+            </list>
+        </property>
+    </bean>
+
+    <!-- 3. 配置事务对象 (切面) -->
+    <bean id="transactionManager" class="org.springframework.orm.hibernate4.HibernateTransactionManager">
+        <property name="sessionFactory" ref="sessionFactory"/>
+    </bean>
+
+    <!-- 4. 配置事务属性 -->
+    <tx:advice id="txAdvice" transaction-manager="transactionManager">
+        <tx:attributes>
+            <tx:method name="add*"/>
+            <tx:method name="delete*"/>
+            <tx:method name="update*"/>
+            <tx:method name="find*"/>
+            <tx:method name="*"/>
+        </tx:attributes>
+    </tx:advice>
+
+    <!-- 5. 配置 spring aop -->
+    <aop:config>
+        <!-- 配置切入点 -->
+        <aop:pointcut id="pointcut" expression="execution(* com.lanou.*.service..*.*(..))"/>
+        <!-- 配置通知 -->
+        <aop:advisor advice-ref="txAdvice" pointcut-ref="pointcut"/>
+    </aop:config>
+
+
+    <bean id="baseDao" class="com.lanou.hrd.dao.impl.BaseDaoImpl">
+        <property name="sessionFactory" ref="sessionFactory"/>
+    </bean>
+
+
+    <bean id="staffDao" class="com.lanou.hrd.dao.impl.StaffDaoImpl">
+        <property name="sessionFactory" ref="sessionFactory"/>
+    </bean>
+
+    <bean id="departmentDao" class="com.lanou.hrd.dao.impl.DepartmentDaoImpl">
+        <property name="sessionFactory" ref="sessionFactory"/>
+    </bean>
+
+    <bean id="postDao" class="com.lanou.hrd.dao.impl.PostDaoImpl">
+        <property name="sessionFactory" ref="sessionFactory"/>
+    </bean>
+
+
+    <!--<bean id="userDao" class="com.lanou.dao.impl.UserDaoImpl">-->
+    <!--&lt;!&ndash; 给 dao层 实现类中的 sessionFactory 进行赋值 &ndash;&gt;-->
+    <!--<property name="sessionFactory" ref="sessionFactory"/>-->
+    <!--</bean>-->
+
+    <!--<bean id="userService" class="com.lanou.service.impl.UserServiceImpl">-->
+    <!--<property name="userDao" ref="userDao"/>-->
+    <!--</bean>-->
+
+</beans>
