@@ -7,12 +7,15 @@ import com.lanou.hrd.domain.PageBean;
 import com.lanou.hrd.service.DepartmentService;
 import com.lanou.hrd.service.PostService;
 import com.lanou.hrd.service.StaffService;
+import com.opensymphony.xwork2.ActionContext;
 import com.opensymphony.xwork2.ActionSupport;
+import org.apache.struts2.ServletActionContext;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
-import org.springframework.util.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 
 import javax.annotation.Resource;
+import javax.servlet.ServletContext;
 import java.util.*;
 
 /**
@@ -40,9 +43,20 @@ public class StaffAction extends ActionSupport {
     //    所属职务ID
     private String post;
 
+    private String depID;
+    private String pid;
+    private String sna;
+    private String staffId;
 
     public String login() {
-        if (staffService.login(loginName, loginPwd)) {
+
+        Crm_staff staffOnePiece = staffService.login(loginName, loginPwd);
+
+        if (staffOnePiece != null) {
+
+            ServletContext servletContext = ServletActionContext.getServletContext();
+            servletContext.setAttribute("staffOnePiece", staffOnePiece);
+
             return SUCCESS;
         } else {
             addActionError("用户名或密码错误");
@@ -51,13 +65,78 @@ public class StaffAction extends ActionSupport {
     }
 
     public void validateLogin() {
-        if (StringUtils.isEmpty(loginName) || StringUtils.isEmpty(loginPwd)) {
+        if (StringUtils.isBlank(loginName) || StringUtils.isBlank(loginPwd)) {
 
-            System.out.println(loginName);
-            System.out.println(loginPwd);
+//            System.out.println(loginName);
+//            System.out.println(loginPwd);
 
             addActionError("用户名或密码不能为空, 请重新登录");
         }
+    }
+
+
+    private String oldPassword;
+    private String newPassword;
+    private String reNewPassword;
+
+    /**
+     * 更改密码方法
+     * 就是获取id 更改密码
+     */
+    public String changePassword(){
+
+        ServletContext servletContext = ServletActionContext.getServletContext();
+
+        Crm_staff staffOnePiece = (Crm_staff) servletContext.getAttribute("staffOnePiece");
+
+        staffOnePiece.setLoginPwd(newPassword);
+
+        staffService.staffUpdate(staffOnePiece);
+
+//        servletContext.removeAttribute("staffOnePiece");
+
+        return SUCCESS;
+    }
+
+    /**
+     * 清除登录状态
+     */
+    public String removeStaff(){
+
+        ServletContext servletContext = ServletActionContext.getServletContext();
+
+        servletContext.removeAttribute("staffOnePiece");
+
+        return SUCCESS;
+    }
+
+
+
+    /* 更改密码拦截验证 */
+    public void validateChangePassword(){
+
+        ServletContext servletContext = ServletActionContext.getServletContext();
+
+        Crm_staff staffOnePiece = (Crm_staff) servletContext.getAttribute("staffOnePiece");
+
+        if(!staffOnePiece.getLoginPwd().equals(oldPassword)){
+
+            addActionError("欧尼酱, 你的初始密码好像不太对哦 （￣へ￣）");
+
+        } else if(StringUtils.isBlank(newPassword) || StringUtils.isBlank(reNewPassword)){
+
+            addActionError("你是在暗示自己是baka么, 只有空密码才能记住");
+
+        } else if(!newPassword.equals(reNewPassword)){
+
+            addActionError("欧尼酱, 新密码要两次都相同哦 (/≧▽≦/)");
+
+        } else if(oldPassword.equals(newPassword)){
+
+            addActionError("这和原来的密码有什么区别么（╯‵□′）╯︵┴─┴");
+
+        }
+
     }
 
 
@@ -72,16 +151,119 @@ public class StaffAction extends ActionSupport {
      */
     public String addStaff() {
 
-//        Crm_department Crm_department = departmentService.findID(department);
+//        Crm_department crmDepartment = departmentService.findID(department);
 
-        Crm_post crm_post = postService.findID(post);
+        Crm_post crmPost = postService.findID(pid);
 
-        Crm_staff crm_staff = new Crm_staff(loginName, loginPwd, staffName, gender, onDutyDate, crm_post);
+//        crmPost.setCrm_department(crmDepartment);
 
-        staffService.add(crm_staff);
+//        if (!StringUtils.isEmpty(staffId)) {
+
+//            System.out.println(loginName);
+
+//            Crm_staff st = staffService.findId(staffId);
+//            st.setLoginName(loginName);
+//            st.setLoginPwd(loginPwd);
+//            st.setStaffName(sna);
+//            st.setGender(gender);
+//            st.setOnDutyDate(onDutyDate);
+//            st.setCrm_post(crmPost);
+//
+//            staffService.staffUpdate(st);
+
+//        } else {
+
+            Crm_staff crm_staff = new Crm_staff(loginName, loginPwd, sna, gender, onDutyDate, crmPost);
+
+            staffService.add(crm_staff);
+
+//        }
 
         return SUCCESS;
     }
+
+    /* 表单判空方法 */
+    public void validateAddStaff() {
+
+//        System.out.println(onDutyDate);
+
+//        System.out.println(staff.getLoginName());
+
+//        if ((pid == null) && post.equals("-1")) addActionError("难道这个员工不属于这个单位?");
+//
+//        if (StringUtils.isBlank(loginName)) addActionError("你拿什么登录啊?亲!");
+//
+//        if (StringUtils.isBlank(loginPwd)) addActionError("密码怎么不见了?");
+//
+//        if (StringUtils.isBlank(sna)) addActionError("可能这个人是个没名字的黑户");
+//
+//        if (onDutyDate == null) addActionError("难到这个人的入职时间超过了N个世纪");
+
+        updateAndAdd();
+
+
+    }
+
+
+    /**
+     * 更改员工
+     */
+    public String updateStaff() {
+
+        Crm_post crmPost = postService.findID(pid);
+
+        Crm_staff st = staffService.findId(staffId);
+        st.setLoginName(loginName);
+        st.setLoginPwd(loginPwd);
+        st.setStaffName(sna);
+        st.setGender(gender);
+        st.setOnDutyDate(onDutyDate);
+        st.setCrm_post(crmPost);
+
+        staffService.staffUpdate(st);
+
+        return SUCCESS;
+    }
+
+    /* 表单判空方法 */
+    public void validateUpdateStaff() {
+
+//        System.out.println(onDutyDate);
+
+//        System.out.println(staff.getLoginName());
+
+//        if ((pid == null) && post.equals("-1")) addActionError("难道这个员工不属于这个单位?");
+//
+//        if (StringUtils.isBlank(loginName)) addActionError("你拿什么登录啊?亲!");
+//
+//        if (StringUtils.isBlank(loginPwd)) addActionError("密码怎么不见了?");
+//
+//        if (StringUtils.isBlank(sna)) addActionError("可能这个人是个没名字的黑户");
+//
+//        if (onDutyDate == null) addActionError("难到这个人的入职时间超过了N个世纪");
+
+        staff = staffService.findId(staffId);
+
+        updateAndAdd();
+
+
+    }
+
+
+    private void updateAndAdd(){
+
+        if ((pid == null) && post.equals("-1")) addActionError("难道这个员工不属于这个单位?");
+
+        if (StringUtils.isBlank(loginName)) addActionError("你拿什么登录啊?亲!");
+
+        if (StringUtils.isBlank(loginPwd)) addActionError("密码怎么不见了?");
+
+        if (StringUtils.isBlank(sna)) addActionError("可能这个人是个没名字的黑户");
+
+        if (onDutyDate == null) addActionError("难到这个人的入职时间超过了N个世纪");
+
+    }
+
 
     private Set<Crm_staff> staffs;
 
@@ -141,16 +323,44 @@ public class StaffAction extends ActionSupport {
 //        System.out.println(!Objects.equals(department, "-1"));
 //        System.out.println(!Objects.equals(post, "-1"));
 
-        System.out.println(!Objects.equals(post, "-1"));
+//        System.out.println(Objects.equals(post, "-1"));
+//        System.out.println(Objects.equals(post, ""));
+//        System.out.println(post == null);
+//        System.out.println(post.isEmpty());
 
 
+//            String sql = "from Crm_staff where 1=1 and crm_post.crm_department.depID=?";
+//            List<String> values = new ArrayList<>();
+//            values.add(department);
 
-//        if (!Objects.equals(post, "-1")) {
+//            List<Crm_staff> beanList = pd.getBeanList();
+//
+//            for (Crm_staff crm_staff : beanList) {
+//                System.out.println(crm_staff);
+//
+//
+//     }
+
+//        staffService.a(department);
+
+
+//        if (!(department == null) && !Objects.equals(department, "-1")) {
+//            String hql = "from Crm_staff where 1=1 and crm_post.crm_department.depID=:department";
+//
+//
+//            Map<String, Object> params = new HashMap<>();
+//            params.put("department", department);
+//            pd = staffService.findStaff(pc, ps, hql, params);
+//
+//
+//        }
+
+
+//        if (!(post == null) && !Objects.equals(post, "-1")) {
 //        String hql = "from Crm_staff where 1=1 Crm_staff.crm_post.postId";
 //        Map<String, Object> params = new HashMap<>();
 //        params.put("Crm_staff.crm_post.postId", post);
-//        Object[] values = {post};
-//        PageBean<Crm_staff> staff = staffService.findStaff(pc, ps, hql, params, values);
+//        PageBean<Crm_staff> staff = staffService.findStaff(pc, ps, hql, params);
 //        }
 
 
@@ -159,10 +369,11 @@ public class StaffAction extends ActionSupport {
 //        staff.getBeanList();
 
 
+        pd = staffService.findStaff(pc, ps, department, post, staffName);
 
 
 //        传递 pc, ps 获得 pageBean
-        pd = staffService.findAll(pc, ps);
+//        pd = staffService.findAll(pc, ps);
 
 //        pd.getBeanList().size();
 
@@ -174,6 +385,32 @@ public class StaffAction extends ActionSupport {
 //            c.getCrm_post().getCrm_department();
 //        }
 
+
+        return SUCCESS;
+    }
+
+
+    private List<Crm_department> dep = new ArrayList<>();
+    private Set<Crm_post> pos = new HashSet<>();
+    private Crm_staff staff;
+
+    /**
+     * 用 id查询 员工信息
+     */
+    public String IdStaff() {
+
+        dep = departmentService.findAll();
+
+        pos = departmentService.findID(depID).getPosts();
+
+//        pos = postService.findAll();
+
+//        for (Crm_post po : pos) {
+//            System.out.println(po.getPostId());
+//        }
+
+        staff = staffService.findId(staffId);
+//        System.out.println(Crm_post);
 
         return SUCCESS;
     }
@@ -262,5 +499,85 @@ public class StaffAction extends ActionSupport {
 
     public void setPost(String post) {
         this.post = post;
+    }
+
+    public List<Crm_department> getDep() {
+        return dep;
+    }
+
+    public void setDep(List<Crm_department> dep) {
+        this.dep = dep;
+    }
+
+    public String getDepID() {
+        return depID;
+    }
+
+    public void setDepID(String depID) {
+        this.depID = depID;
+    }
+
+    public Set<Crm_post> getPos() {
+        return pos;
+    }
+
+    public void setPos(Set<Crm_post> pos) {
+        this.pos = pos;
+    }
+
+    public String getPid() {
+        return pid;
+    }
+
+    public void setPid(String pid) {
+        this.pid = pid;
+    }
+
+    public String getStaffId() {
+        return staffId;
+    }
+
+    public void setStaffId(String staffId) {
+        this.staffId = staffId;
+    }
+
+    public Crm_staff getStaff() {
+        return staff;
+    }
+
+    public void setStaff(Crm_staff staff) {
+        this.staff = staff;
+    }
+
+    public String getSna() {
+        return sna;
+    }
+
+    public void setSna(String sna) {
+        this.sna = sna;
+    }
+
+    public String getOldPassword() {
+        return oldPassword;
+    }
+
+    public void setOldPassword(String oldPassword) {
+        this.oldPassword = oldPassword;
+    }
+
+    public String getNewPassword() {
+        return newPassword;
+    }
+
+    public void setNewPassword(String newPassword) {
+        this.newPassword = newPassword;
+    }
+
+    public String getReNewPassword() {
+        return reNewPassword;
+    }
+
+    public void setReNewPassword(String reNewPassword) {
+        this.reNewPassword = reNewPassword;
     }
 }

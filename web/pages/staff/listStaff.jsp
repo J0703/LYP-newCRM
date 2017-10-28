@@ -25,7 +25,7 @@
 
         <td width="57%" align="right">
             <%--高级查询 --%>
-            <a href="javascript:void(0)" onclick="condition()"><img
+            <a href="javascript:void(0)" onclick="document.forms[0].submit()"><img
                     src="${pageContext.request.contextPath}/images/button/gaojichaxun.gif"/></a>
             <%--员工注入 --%>
             <a href="${pageContext.request.contextPath}/pages/staff/addStaff.jsp">
@@ -64,7 +64,7 @@
             </td>
             <td width="80px">姓名：</td>
             <td width="200px"><input type="text" name="staffName" size="12"/></td>
-            <td> <input type="submit" value="提交"></td>
+            <%--<td> <input type="submit" value="提交"></td>--%>
         </tr>
     </table>
 </form>
@@ -107,7 +107,12 @@
         <td align="center">${staff.crm_post.crm_department.depName}</td>
         <td align="center">${staff.crm_post.postName}</td>
         <td width="7%" align="center">
-            <a href="${pageContext.request.contextPath}/addStaff.action?staffName=${staff.staffName}&staffId=${staff.staffId}"><img
+
+            <%--staffId=${staff.staffId}--%>
+            <%--postID=${staff.crm_post.postId}--%>
+            <%--depID=${staff.crm_post.crm_department.depID}--%>
+
+            <a href="${pageContext.request.contextPath}/IdStaff.action?staffId=${staff.staffId}&pid=${staff.crm_post.postId}&depID=${staff.crm_post.crm_department.depID}"><img
                     src="${pageContext.request.contextPath}/images/button/modify.gif" class="img"/></a>
       </td>
    </c:forEach>
@@ -211,7 +216,7 @@
 
             $("#department").empty();
 
-            $("#department").append("<option value='-1'>--请选择--</option>");
+            $("#department").append("<option value='-1'>--请选择部门--</option>");
 
             $("#department").append(_html);
         });
@@ -226,7 +231,7 @@
 
             $("#post").empty();
 
-            $("#post").append("<option value='-1'>--请选择--</option>");
+            $("#post").append("<option value='-1'>--请选择职务--</option>");
 
             $.post("post","department="+$("#department").val(),function (date) {
 

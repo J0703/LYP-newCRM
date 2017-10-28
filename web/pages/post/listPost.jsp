@@ -59,7 +59,7 @@
         <td align="center">${post.crm_department.depName}</td>
         <td align="center">${post.postName}</td>
         <td width="7%" align="center">
-            <a href="${pageContext.request.contextPath}/IdPost.action?postName=${post.postName}&postId=${post.postId}"><img src="${pageContext.request.contextPath}/images/button/modify.gif" class="img" /></a>
+            <a href="${pageContext.request.contextPath}/IdPost.action?postName=${post.postName}&postId=${post.postId}&depID=${post.crm_department.depID}"><img src="${pageContext.request.contextPath}/images/button/modify.gif" class="img" /></a>
         </td>
     </tr>
     </c:forEach>

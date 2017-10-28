@@ -33,7 +33,7 @@ public class PostServiceImpl implements PostService {
     @Override
     public List<Crm_post> findAll() {
 
-        String hql = "from Crm_department";
+        String hql = "from Crm_post";
 
         return postDao.findAll(hql);
     }

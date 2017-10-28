@@ -11,6 +11,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.util.StringUtils;
 
 import javax.annotation.Resource;
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -33,9 +35,12 @@ public class PostAction extends ActionSupport {
 
     public String addPost() {
 
+//        System.out.println(postId);
+        Crm_department de = departmentService.findID(department);
+
         Crm_post post = postService.findSingle(postName);
 
-        if (post != null) {
+        if (post != null && de == null) {
 
             addActionError("添加职务名称相同, 请重新填写");
 
@@ -47,7 +52,9 @@ public class PostAction extends ActionSupport {
 
                 Crm_post po = postService.findID(postId);
 
-                po.setPostName(postId);
+                po.setPostName(postName);
+
+                po.setCrm_department(de);
 
                 postService.postUpdate(po);
 
@@ -104,14 +111,19 @@ public class PostAction extends ActionSupport {
     }
 
 
+    private List<Crm_department> dep = new ArrayList<>();
+    private String depID;
+
     /**
      * 用 id查询 职务信息
      */
     public String IdPost() {
 
-        Crm_post Crm_post = postService.findID(postId);
+//        Crm_post Crm_post = postService.findID(postId);
 
-        System.out.println(Crm_post);
+        dep = departmentService.findAll();
+
+//        System.out.println(Crm_post);
 
         return SUCCESS;
     }
@@ -203,5 +215,21 @@ public class PostAction extends ActionSupport {
 
     public void setPostId(String postId) {
         this.postId = postId;
+    }
+
+    public List<Crm_department> getDep() {
+        return dep;
+    }
+
+    public void setDep(List<Crm_department> dep) {
+        this.dep = dep;
+    }
+
+    public String getDepID() {
+        return depID;
+    }
+
+    public void setDepID(String depID) {
+        this.depID = depID;
     }
 }
