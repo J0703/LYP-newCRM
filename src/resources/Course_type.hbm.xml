@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+    <class name="com.lanou.teach.domain.Course_type" table="crm_course_type">
+        <id name="courseTypeID">
+            <generator class="uuid"/>
+        </id>
+
+        <set name="classes" cascade="all" inverse="true" lazy="false">
+            <key column="lessonTypeID"/>
+            <one-to-many class="com.lanou.teach.domain.Classes"/>
+        </set>
+
+        <property name="courseCost"/>
+        <property name="total"/>
+        <property name="courseName"/>
+        <property name="remark" length="5000"/>
+
+
+    </class>
+</hibernate-mapping>

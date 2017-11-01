@@ -1,3 +1,4 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
@@ -22,7 +23,7 @@
     <td width="42%"align="center">&nbsp;</td>
     <td width="36%"align="right">
     	<%--添加班级  /html/classesm/addClass.jsp--%>
-    	<a href="${pageContext.request.contextPath}/pages/classesm/addOrEditClass.jsp">
+    	<a href="${pageContext.request.contextPath}/findC.action">
     		<img src="${pageContext.request.contextPath}/images/button/tianjia.gif" class="img"/>
     	</a>
     	<%--高级查询 
@@ -61,6 +62,31 @@
 	<th align="center">课程表</th>
   </tr>
   </thead>
+
+	<c:forEach items="${pd.beanList}" var="classes" varStatus="a">
+	<c:if test="${a.index%2==0}">
+	<tr class="tabtd1">
+		</c:if>
+		<c:if test="${a.index%2!=0}">
+	<tr class="tabtd2">
+		</c:if>
+
+		<td align="center">${classes.name}</td>
+		<td align="center">${classes.lessonTypeID.courseName}</td>
+		<td align="center">${classes.beginTime}</td>
+		<td align="center">${classes.endTime}</td>
+		<td align="center"></td>
+		<td align="center">${classes.totalCount}</td>
+		<td align="center">${classes.upgradeCount}</td>
+		<td align="center">${classes.changeCount}</td>
+
+			<td width="7%" align="center">
+			<%--<a href="${pageContext.request.contextPath}/IdDepart.action?depName=${depart.depName}&depID=${depart.depID}"><img--%>
+					<%--src="${pageContext.request.contextPath}/images/button/modify.gif" class="img"/></a>--%>
+		</td>
+		</c:forEach>
+
+
   <tbody>
 	  <tr class="tabtd2">
 	    <td align="center">J161001期</td>
@@ -106,20 +132,73 @@
   </tbody>
 </table>
 
-
 <table border="0" cellspacing="0" cellpadding="0" align="center">
-  <tr>
-    <td align="right">
-    	<span>第1/3页</span>
-        <span>
-        	<a href="#">[首页]</a>&nbsp;&nbsp;
-            <a href="#">[上一页]</a>&nbsp;&nbsp;
-            <a href="#">[下一页]</a>&nbsp;&nbsp;
-            <a href="#">[尾页]</a>
+	<tr>
+		<td align="right">
+			<span>第${pd.pc}页/共${pd.tp}页</span>
+			<span>
+        	<a href="departPaging.action">[首页]</a>&nbsp;&nbsp;
+
+            <c:if test="${pd.pc > 1}">
+				<a href="departPaging.action?pc=${pd.pc-1}">[上一页]</a>&nbsp;&nbsp;
+			</c:if>
+
+            <c:choose>
+				<c:when test="${pd.tp<=10}">
+					<c:set var="begin" value="1"/>
+					<c:set var="end" value="${pd.tp}"/>
+				</c:when>
+				<%-- 总页数>10, 使用计算公式计算 end, begin --%>
+				<c:otherwise>
+					<c:set var="begin" value="${pd.pc - 5}"/>
+					<c:set var="end" value="${pd.pc + 4}"/>
+					<%-- 头溢出 --%>
+					<c:if test="${begin < 1}">
+						<c:set var="begin" value="1"/>
+						<c:set var="end" value="10"/>
+					</c:if>
+					<%-- 尾溢出 --%>
+					<c:if test="${end > pd.tp}">
+						<c:set var="begin" value="${pd.tp - 9}"/>
+						<c:set var="end" value="${pd.tp}"/>
+					</c:if>
+				</c:otherwise>
+			</c:choose>
+
+            <c:forEach var="i" begin="${begin}" end="${end}">
+				<c:choose>
+					<c:when test="${pd.pc eq i}">
+						[${i}]
+					</c:when>
+					<c:otherwise>
+						<a href="departPaging.action?pc=${i}">${i}</a>
+					</c:otherwise>
+				</c:choose>
+			</c:forEach>
+
+            <c:if test="${pd.pc < pd.tp}">
+				<a href="departPaging.action?pc=${pd.pc+1}">[下一页]</a>&nbsp;&nbsp;
+			</c:if>
+            <a href="departPaging.action?pc=${pd.tp}">[尾页]</a>
         </span>
-    </td>
-  </tr>
+		</td>
+	</tr>
 </table>
+
+
+<%--<table border="0" cellspacing="0" cellpadding="0" align="center">--%>
+  <%--<tr>--%>
+    <%--<td align="right">--%>
+    	<%--<span>第1/3页</span>--%>
+        <%--<span>--%>
+        	<%--<a href="#">[首页]</a>&nbsp;&nbsp;--%>
+            <%--<a href="#">[上一页]</a>&nbsp;&nbsp;--%>
+            <%--<a href="#">[下一页]</a>&nbsp;&nbsp;--%>
+            <%--<a href="#">[尾页]</a>--%>
+        <%--</span>--%>
+    <%--</td>--%>
+  <%--</tr>--%>
+<%--</table>--%>
 
 </body>
 </html>

@@ -44,6 +44,10 @@
                 <value>classpath:resources/Crm_department.hbm.xml</value>
                 <value>classpath:resources/Crm_post.hbm.xml</value>
                 <value>classpath:resources/Crm_staff.hbm.xml</value>
+                <!--<value>classpath:resources/Follow.hbm.xml</value>-->
+                <!--<value>classpath:resources/Refer.hbm.xml</value>-->
+                <value>classpath:resources/Classes.hbm.xml</value>
+                <value>classpath:resources/Course_type.hbm.xml</value>
             </list>
         </property>
     </bean>
@@ -90,11 +94,14 @@
         <property name="sessionFactory" ref="sessionFactory"/>
     </bean>
 
+    <bean id="classes" class="com.lanou.teach.dao.impl.ClassesDaoImpl">
+        <property name="sessionFactory" ref="sessionFactory"/>
+    </bean>
 
-    <!--<bean id="userDao" class="com.lanou.dao.impl.UserDaoImpl">-->
-    <!--&lt;!&ndash; 给 dao层 实现类中的 sessionFactory 进行赋值 &ndash;&gt;-->
-    <!--<property name="sessionFactory" ref="sessionFactory"/>-->
-    <!--</bean>-->
+    <bean id="course_typeDao" class="com.lanou.teach.dao.impl.Course_typeDaoImpl">
+    <!-- 给 dao层 实现类中的 sessionFactory 进行赋值 -->
+    <property name="sessionFactory" ref="sessionFactory"/>
+    </bean>
 
     <!--<bean id="userService" class="com.lanou.service.impl.UserServiceImpl">-->
     <!--<property name="userDao" ref="userDao"/>-->

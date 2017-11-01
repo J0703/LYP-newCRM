@@ -7,6 +7,7 @@ import com.lanou.hrd.domain.PageBean;
 import com.lanou.hrd.service.DepartmentService;
 import com.lanou.hrd.service.PostService;
 import com.lanou.hrd.service.StaffService;
+import com.lanou.util.MD5Util;
 import com.opensymphony.xwork2.ActionContext;
 import com.opensymphony.xwork2.ActionSupport;
 import org.apache.struts2.ServletActionContext;
@@ -16,6 +17,8 @@ import org.apache.commons.lang3.StringUtils;
 
 import javax.annotation.Resource;
 import javax.servlet.ServletContext;
+import java.io.UnsupportedEncodingException;
+import java.security.NoSuchAlgorithmException;
 import java.util.*;
 
 /**
@@ -48,9 +51,14 @@ public class StaffAction extends ActionSupport {
     private String sna;
     private String staffId;
 
-    public String login() {
+    @Resource
+    MD5Util md5Util;
 
-        Crm_staff staffOnePiece = staffService.login(loginName, loginPwd);
+    public String login() throws UnsupportedEncodingException, NoSuchAlgorithmException {
+
+        String s = md5Util.EncoderByMd5(loginPwd);
+
+        Crm_staff staffOnePiece = staffService.login(loginName, s);
 
         if (staffOnePiece != null) {
 
@@ -83,13 +91,15 @@ public class StaffAction extends ActionSupport {
      * 更改密码方法
      * 就是获取id 更改密码
      */
-    public String changePassword(){
+    public String changePassword() throws UnsupportedEncodingException, NoSuchAlgorithmException {
 
         ServletContext servletContext = ServletActionContext.getServletContext();
 
         Crm_staff staffOnePiece = (Crm_staff) servletContext.getAttribute("staffOnePiece");
 
-        staffOnePiece.setLoginPwd(newPassword);
+        String s = md5Util.EncoderByMd5(newPassword);
+
+        staffOnePiece.setLoginPwd(s);
 
         staffService.staffUpdate(staffOnePiece);
 
@@ -149,7 +159,7 @@ public class StaffAction extends ActionSupport {
     /**
      * 添加学生
      */
-    public String addStaff() {
+    public String addStaff() throws UnsupportedEncodingException, NoSuchAlgorithmException {
 
 //        Crm_department crmDepartment = departmentService.findID(department);
 
@@ -173,7 +183,9 @@ public class StaffAction extends ActionSupport {
 
 //        } else {
 
-            Crm_staff crm_staff = new Crm_staff(loginName, loginPwd, sna, gender, onDutyDate, crmPost);
+        String s = md5Util.EncoderByMd5(loginPwd);
+
+            Crm_staff crm_staff = new Crm_staff(loginName, s, sna, gender, onDutyDate, crmPost);
 
             staffService.add(crm_staff);
 
@@ -208,13 +220,15 @@ public class StaffAction extends ActionSupport {
     /**
      * 更改员工
      */
-    public String updateStaff() {
+    public String updateStaff() throws UnsupportedEncodingException, NoSuchAlgorithmException {
 
         Crm_post crmPost = postService.findID(pid);
 
+        String s = md5Util.EncoderByMd5(loginPwd);
+
         Crm_staff st = staffService.findId(staffId);
         st.setLoginName(loginName);
-        st.setLoginPwd(loginPwd);
+        st.setLoginPwd(s);
         st.setStaffName(sna);
         st.setGender(gender);
         st.setOnDutyDate(onDutyDate);
@@ -580,4 +594,6 @@ public class StaffAction extends ActionSupport {
     public void setReNewPassword(String reNewPassword) {
         this.reNewPassword = reNewPassword;
     }
+
+
 }

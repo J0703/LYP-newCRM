@@ -62,7 +62,7 @@
 	    <td width="10%">所属部门：</td>
 	    <td width="20%">
 	    	<%--<select name="crmPost.crmDepartment.depId"onchange="changePost(this)">--%>
-	    	<select name="department" id="depID">
+	    	<select name="depID" id="depID">
 			    <option value="-1">----请--选--择----</option>
 			    <%--<option value="ee050687bd1a4455a153d7bbb7000001">教学部</option>--%>
 			    <%--<option value="ee050687bd1a4455a153d7bbb7000002">咨询部</option>--%>
@@ -104,20 +104,20 @@
 
 			}
 
-			$("#department").empty();
+			$("#depID").empty();
 
-			$("#department").append("<option value='-1'>--请选择--</option>");
+			$("#depID").append("<option value='-1'>--请选择--</option>");
 
-			$("#department").append(_html);
+			$("#depID").append(_html);
 		})
 
-		$("#department").change(function () {
+		$("#depID").change(function () {
 
 			$("#post").empty();
 
 			$("#post").append("<option value='-1'>--请选择--</option>");
 
-			$.post("post","department="+$("#department").val(),function (date) {
+			$.post("post","department="+$("#depID").val(),function (date) {
 
 				var _html = "";
 

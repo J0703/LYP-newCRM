@@ -68,10 +68,10 @@
     <c:forEach items="${pd.beanList}" var="depart" varStatus="a">
     <c:if test="${a.index%2==0}">
     <tr class="tabtd1">
-    </c:if>
-    <c:if test="${a.index%2!=0}">
+        </c:if>
+        <c:if test="${a.index%2!=0}">
     <tr class="tabtd2">
-    </c:if>
+        </c:if>
 
         <td align="center">${depart.depName}</td>
         <td width="7%" align="center">

@@ -28,6 +28,25 @@ public class DepartmentAction extends ActionSupport {
 
     private String depID;
 
+    private List<Crm_department> dep;
+
+
+    /**
+     * 查询所有部门
+     */
+    public String findDep() {
+
+        dep = departmentService.findAll();
+
+//        for (Crm_department department : departments) {
+//            System.out.println(department);
+//        }
+
+
+        return SUCCESS;
+    }
+
+
 
     /**
      * 添加部门
@@ -178,5 +197,13 @@ public class DepartmentAction extends ActionSupport {
 
     public void setDepID(String depID) {
         this.depID = depID;
+    }
+
+    public List<Crm_department> getDep() {
+        return dep;
+    }
+
+    public void setDep(List<Crm_department> dep) {
+        this.dep = dep;
     }
 }

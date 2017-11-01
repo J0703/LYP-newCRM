@@ -10,6 +10,51 @@
 
     <package name="login" extends="json-default">
 
+        <!-- 声明自定义拦截器对象 -->
+        <interceptors>
+            <!-- 声明登录拦截器 -->
+            <interceptor name="loginCheck" class="com.lanou.intercrceptor.LoginInterceptor"/>
+
+            <!-- 声明定义的拦截器 -->
+            <interceptor name="addAndUpdate" class="com.lanou.intercrceptor.AddAndUpdateInterceptor"/>
+
+            <!-- 声明一个拦截器集合, 将多个拦截器放在一个 stack 栈中 -->
+            <interceptor-stack name="myInterceptorStack">
+
+                <!-- 将登录拦截器加入自定义拦截器栈中 -->
+                <interceptor-ref name="loginCheck">
+                    <param name="excludeMethods">login</param>
+                    <!--<param name="includeMethods">add,update</param>-->
+                </interceptor-ref>
+
+                <!-- 将自定义的拦截器加入自定义拦截器栈中 -->
+                <interceptor-ref name="addAndUpdate">
+                    <!--<param name="excludeMethods">login,changePassword,removeStaff,findAll,depart,departPaging,IdDepart,postPaging,post,IdPost,addCourse_type</param>-->
+                    <param name="includeMethods">addDepart,addPost,addStaff,updateStaff</param>
+                </interceptor-ref>
+
+
+                <!-- 将 struts 提供的默认拦截器加入自定义拦截器栈中, 此种方式保证了原来 struts 提供的拦截器仍然好用
+                    如果不加 defaultStack, 则使用自定义拦截器时原来的 struts的拦截器不好用了 -->
+                <interceptor-ref name="defaultStack"/>
+
+            </interceptor-stack>
+
+        </interceptors>
+
+
+        <!-- 给当前 package中的所有 action 动作都设置自定义拦截器, 即所有的 action 调用均会进入自定义拦截器 -->
+        <default-interceptor-ref name="myInterceptorStack"/>
+
+        <!-- 定义全局结果视图, 当返回 login 时, 跳转到登录页面 -->
+        <global-results>
+            <result name="login">/pages/login.jsp</result>
+            <result name="error">/pages/frame/right.jsp</result>
+        </global-results>
+
+
+
+
         <!--  登录查询 -->
         <action name="login" class="staffAction" method="login">
             <result name="success">/pages/frame.jsp</result>
@@ -45,6 +90,11 @@
             <result name="success" type="json">
                 <param name="root">departments</param>
             </result>
+        </action>
+
+        <!-- 正常查询全部部门 -->
+        <action name="departFind" class="departmentAction" method="findDep">
+            <result name="success">/pages/post/addOrEditPost.jsp</result>
         </action>
 
         <!-- 增加一个职务 -->
@@ -95,6 +145,54 @@
         <action name="updateStaff" class="staffAction" method="updateStaff">
             <result name="success" type="chain">findAll</result>
             <result name="input">/pages/staff/editStaff.jsp</result>
+            <!--<result name="error">/pages/staff/addStaff.jsp</result>-->
+            <!--<result name="input">/pages/staff/addStaff.jsp</result>-->
+        </action>
+
+        <!-- ********************************************************* -->
+
+        <!-- 增加一个课程表 -->
+        <action name="addCourse_type" class="course_typeAction" method="addCourse_type">
+            <result name="success" type="chain">coursePaging</result>
+            <result name="input">/pages/coursetype/addOrEditCourse.jsp</result>
+        </action>
+
+        <!-- 课程表分页输出 -->
+        <action name="coursePaging" class="course_typeAction" method="findCourse_Type">
+            <result name="success">/pages/coursetype/listCourse.jsp</result>
+            <result name="input">/pages/coursetype/listCourse.jsp</result>
+        </action>
+
+        <!-- 课程表更改 -->
+        <action name="updateCourse_type" class="course_typeAction" method="updateCourse_type">
+            <result name="success" type="chain">coursePaging</result>
+        </action>
+
+        <!-- 用 id 查询一个课程表 -->
+        <action name="IdCourse" class="course_typeAction" method="IdCourse">
+            <result name="success">/pages/coursetype/addOrEditCourse.jsp</result>
+        </action>
+
+        <!-- json语句, 查询全部课程表 -->
+        <action name="findCourse" class="course_typeAction" method="findCourse">
+            <result name="success" type="json">
+                <param name="root">cou</param>
+            </result>
+        </action>
+
+        <!-- 查询全部课程表 -->
+        <action name="findC" class="course_typeAction" method="findCourse">
+            <result name="success">/pages/classesm/addOrEditClass.jsp</result>
+        </action>
+
+        <!-- 查询全部班级 -->
+        <action name="classesPaging" class="classesAction" method="classesPaging">
+            <result name="success">/pages/classesm/listClass.jsp</result>
+        </action>
+
+        <!-- 添加一个班级 -->
+        <action name="addClasses" class="classesAction" method="addClasses">
+            <result name="success" type="chain">findCourse</result>
         </action>
 
     </package>

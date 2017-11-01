@@ -1,3 +1,4 @@
+<%@ taglib prefix="s" uri="/struts-tags" %>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
@@ -31,4 +32,7 @@ setInterval("timeStr=new Date().toLocaleString();timer.innerText=timeStr;",1000)
 		</tr>
 	</table>
 </div>
+        <font color="#ff0000">
+        　　　　　　　　　　　　　　　　　　　　${msg}
+        </font>
 </BODY></HTML>
