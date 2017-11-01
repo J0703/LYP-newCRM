@@ -4,6 +4,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <%--<embed src="/images/11111.mp3" hidden="true" autostart="true" loop="true"/>--%>
 <title>CRM系统</title>
 </head>
 <frameset rows="90,*" framespacing="0px" frameborder="no">
@@ -17,5 +18,8 @@
         <frame src="${pageContext.request.contextPath}/pages/frame/control.jsp" scrolling="no"/>
         <frame src="${pageContext.request.contextPath}/pages/frame/right.jsp" name="right" scrolling="yes"/>
 	</frameset>
+    <frameset rows="0,0" framespacing="0px" frameborder="no">
+    <frame scrolling="no" src="/images/11111.mp3" noresize target="_self">
+    </frameset>
 </frameset>
 </html>

@@ -51,11 +51,11 @@
 	  </tr>
 	  <tr>  
 	    <td >总学时：</td>
-	    <td ><input type="text" name="totalStart" size="12" value="" />  至  <input type="text" name="totalEnd" size="12" value="" /></td>
+	    <td ><input type="text" name="totalStart" size="12" value="" placeholder="请输入整数"  maxlength="15"/>  至  <input type="text" name="totalEnd" size="12" value="" placeholder="请输入整字"  maxlength="15"/></td>
 	  </tr>
 	  <tr>
 	    <td>课程费用：</td>
-	    <td ><input type="text" name="lessonCostStart" size="12" value="" /> 至 <input type="text" name="lessonCostEnd" size="12" value="" /></td>
+	    <td ><input type="text" name="lessonCostStart" size="12" value="" placeholder="请输入数字"  maxlength="15"/> 至 <input type="text" name="lessonCostEnd" size="12" value="" placeholder="请输入数字"  maxlength="15"/></td>
 	  </tr>
 	</table>
 </form>

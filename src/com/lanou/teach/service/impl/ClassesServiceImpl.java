@@ -56,7 +56,7 @@ public class ClassesServiceImpl implements ClassesService {
     }
 
     @Override
-    public void postUpdate(Classes classes) {
+    public void classesUpdate(Classes classes) {
         classesDao.update(classes);
     }
 }

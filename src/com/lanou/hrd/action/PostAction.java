@@ -90,7 +90,7 @@ public class PostAction extends ActionSupport {
     public String findAll() {
 
 
-        System.out.println(department);
+//        System.out.println(department);
 
         Crm_department id = departmentService.findID(department);
 

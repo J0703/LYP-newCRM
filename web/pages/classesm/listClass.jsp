@@ -70,6 +70,7 @@
 		<c:if test="${a.index%2!=0}">
 	<tr class="tabtd2">
 		</c:if>
+	</tr>
 
 		<td align="center">${classes.name}</td>
 		<td align="center">${classes.lessonTypeID.courseName}</td>
@@ -79,56 +80,77 @@
 		<td align="center">${classes.totalCount}</td>
 		<td align="center">${classes.upgradeCount}</td>
 		<td align="center">${classes.changeCount}</td>
+		<td align="center">
+			<a href="${pageContext.request.contextPath}/pages/classesm/addOrEditClass.jsp"><img src="${pageContext.request.contextPath}/images/button/modify.gif" class="img"/></a>
+		</td>
+		<td align="center">
+			<a href="${pageContext.request.contextPath}/pages/classesm/showClass.jsp"><img src="${pageContext.request.contextPath}/images/button/modify.gif" class="img"/></a>
+		</td>
+		<td align="center" title="${classes.uploadTime}">
 
-			<td width="7%" align="center">
+			<a href="${pageContext.request.contextPath}/IdClasses.action?courseTypeId=${classes.classID}">上传</a>
+
+			<c:set value="${classes.uploadPath}" var="path"/>
+			<c:if test="${not empty path}">
+				<a href="${pageContext.request.contextPath}/download.action?fileName=${classes.uploadFileName}">下载</a>
+			</c:if>
+
+
+			<%--<form action="${pageContext.request.contextPath}/singleUpload.action" enctype="multipart/form-data" method="post">--%>
+				<%--<input type="file" name="photo">--%>
+				<%--<input type="submit" value="上传">--%>
+			<%--</form>--%>
+		</td>
+
+			<%--<td width="7%" align="center">--%>
 			<%--<a href="${pageContext.request.contextPath}/IdDepart.action?depName=${depart.depName}&depID=${depart.depID}"><img--%>
 					<%--src="${pageContext.request.contextPath}/images/button/modify.gif" class="img"/></a>--%>
-		</td>
+		<%--</td>--%>
 		</c:forEach>
 
 
-  <tbody>
-	  <tr class="tabtd2">
-	    <td align="center">J161001期</td>
-	    <td align="center">JavaEE </td>
-	    <td align="center">2016-10-10</td>
-	    <td align="center">2016-11-1</td>
-	    <td align="center">已结束</td>
-	    <td align="center">1 </td>
-	    <td align="center">2 </td>
-	    <td align="center">0 </td>
-	    <td align="center">
-	    	<a href="${pageContext.request.contextPath}/pages/classesm/addOrEditClass.jsp"><img src="${pageContext.request.contextPath}/images/button/modify.gif" class="img"/></a>
-	    </td>
-		<td align="center">
-	    	<a href="${pageContext.request.contextPath}/pages/classesm/showClass.jsp"><img src="${pageContext.request.contextPath}/images/button/modify.gif" class="img"/></a>
-		</td>
-		<td align="center" title="上次上传时间：2015-04-02">   
-			<a href="${pageContext.request.contextPath}/pages/classesm/uploadClass.jsp">上传</a>
-			<a href="${pageContext.request.contextPath}/pages/classesm/downloadClass">下载</a> <br/>
-		</td>
-	  </tr>
-	  <tr class="tabtd1">
-	    <td align="center">J161002期</td>
-	    <td align="center">JavaEE </td>
-	    <td align="center">2016-11-10</td>
-	    <td align="center">2016-12-10</td>
-	    <td align="center">已开班</td>
-	    <td align="center">0 </td>
-	    <td align="center">0 </td>
-	    <td align="center">0 </td>
-	    <td align="center">
-	    	<a href="${pageContext.request.contextPath}/classesm/classAction_preAddOrEdit.action?classId=2c9091c14c78e58b014c78e9106e000b"><img src="${pageContext.request.contextPath}/images/button/modify.gif" class="img"/></a>
-	    </td>
-		<td align="center">
-	    	<a href="${pageContext.request.contextPath}/classesm/classAction_findById.action?classId=2c9091c14c78e58b014c78e9106e000b"><img src="${pageContext.request.contextPath}/images/button/modify.gif" class="img"/></a>
-		</td>
-		<td align="center" title="上次上传时间：">   
-			<a href="${pageContext.request.contextPath}/classesm/classAction_preUpload.action?classId=2c9091c14c78e58b014c78e9106e000b">上传</a>
-			 暂无
-		</td>
-	  </tr>
-  
+  <%--<tbody>--%>
+	  <%--<tr class="tabtd2">--%>
+	    <%--<td align="center">J161001期</td>--%>
+	    <%--<td align="center">JavaEE </td>--%>
+	    <%--<td align="center">2016-10-10</td>--%>
+	    <%--<td align="center">2016-11-1</td>--%>
+	    <%--<td align="center">已结束</td>--%>
+	    <%--<td align="center">1 </td>--%>
+	    <%--<td align="center">2 </td>--%>
+	    <%--<td align="center">0 </td>--%>
+	    <%--<td align="center">--%>
+	    	<%--<a href="${pageContext.request.contextPath}/pages/classesm/addOrEditClass.jsp"><img src="${pageContext.request.contextPath}/images/button/modify.gif" class="img"/></a>--%>
+	    <%--</td>--%>
+		<%--<td align="center">--%>
+	    	<%--<a href="${pageContext.request.contextPath}/pages/classesm/showClass.jsp"><img src="${pageContext.request.contextPath}/images/button/modify.gif" class="img"/></a>--%>
+		<%--</td>--%>
+		<%--<td align="center" title="上次上传时间：2015-04-02">   --%>
+			<%--<a href="${pageContext.request.contextPath}/pages/classesm/uploadClass.jsp">上传</a>--%>
+			<%--<a href="${pageContext.request.contextPath}/pages/classesm/downloadClass">下载</a> <br/>--%>
+		<%--</td>--%>
+	  <%--</tr>--%>
+	  <%--<tr class="tabtd1">--%>
+	    <%--<td align="center">J161002期</td>--%>
+	    <%--<td align="center">JavaEE </td>--%>
+	    <%--<td align="center">2016-11-10</td>--%>
+	    <%--<td align="center">2016-12-10</td>--%>
+	    <%--<td align="center">已开班</td>--%>
+	    <%--<td align="center">0 </td>--%>
+	    <%--<td align="center">0 </td>--%>
+	    <%--<td align="center">0 </td>--%>
+	    <%--<td align="center">--%>
+	    	<%--<a href="${pageContext.request.contextPath}/classesm/classAction_preAddOrEdit.action?classId=2c9091c14c78e58b014c78e9106e000b"><img src="${pageContext.request.contextPath}/images/button/modify.gif" class="img"/></a>--%>
+	    <%--</td>--%>
+		<%--<td align="center">--%>
+	    	<%--<a href="${pageContext.request.contextPath}/classesm/classAction_findById.action?classId=2c9091c14c78e58b014c78e9106e000b"><img src="${pageContext.request.contextPath}/images/button/modify.gif" class="img"/></a>--%>
+		<%--</td>--%>
+		<%--<td align="center" title="上次上传时间：">   --%>
+			<%--<a href="${pageContext.request.contextPath}/classesm/classAction_preUpload.action?classId=2c9091c14c78e58b014c78e9106e000b">上传</a>--%>
+			 <%--暂无--%>
+		<%--</td>--%>
+	  <%--</tr>--%>
+
   </tbody>
 </table>
 

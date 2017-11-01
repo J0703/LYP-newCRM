@@ -60,8 +60,10 @@
                         <s:actionerror/>
                     </font>
                     <br/>
-                    用户名：<input type="text" name="loginName" class="msg"/><br/><br/>
-                    密&nbsp;码：<input type="password" name="loginPwd" class="msg"/><br/><br/>
+                    用户名：<input type="text" name="loginName" class="msg" placeholder="请输入用户名"
+                               onfocus="if(placeholder=='请输入用户名') {value=''}" onblur="if (value=='')
+        {value='请输入用户名'}" maxlength="30"/><br/><br/>
+                    密&nbsp;码：<input type="password" name="loginPwd" class="msg" placeholder="请输入密码"  maxlength="15"/><br/><br/>
                     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                     <input type="submit" class="btn" value="登录 "/>
 

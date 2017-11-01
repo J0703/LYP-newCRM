@@ -20,6 +20,6 @@ public interface ClassesService {
 
     Classes findSingle(String classesName);
 
-    void postUpdate(Classes classes);
+    void classesUpdate(Classes classes);
 
 }

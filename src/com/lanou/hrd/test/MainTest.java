@@ -111,7 +111,7 @@ public class MainTest {
     @Test
     public void EncoderByMd5() throws NoSuchAlgorithmException, UnsupportedEncodingException {
 
-        String str = "2";
+        String str = "22";
 
         //确定计算方法
         MessageDigest md5=MessageDigest.getInstance("MD5");

@@ -73,6 +73,7 @@ public class StaffAction extends ActionSupport {
     }
 
     public void validateLogin() {
+
         if (StringUtils.isBlank(loginName) || StringUtils.isBlank(loginPwd)) {
 
 //            System.out.println(loginName);
@@ -265,6 +266,8 @@ public class StaffAction extends ActionSupport {
 
 
     private void updateAndAdd(){
+
+        if (loginPwd.length() > 15) addActionError("这样你的账号可就找不回来了哦");
 
         if ((pid == null) && post.equals("-1")) addActionError("难道这个员工不属于这个单位?");
 

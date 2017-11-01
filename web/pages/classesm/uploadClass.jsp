@@ -32,21 +32,23 @@
   </tr>
 </table>
 
-<form action="/crm2/classesm/classAction_upload.action" method="post" enctype="multipart/form-data">
+<form action="${pageContext.request.contextPath}/singleUpload.action?courseTypeId=${classes.classID}" method="post" enctype="multipart/form-data">
 	<table width="88%" border="0" class="emp_table" style="width:80%;">
 	  <tr>
 	    <td width="120">课程类别：</td>
-	    <td>JavaEE </td>
+	    <%--<td>JavaEE </td>--%>
+	    <td>${classes.lessonTypeID.courseName} </td>
 	    <td>&nbsp;</td>
 	  </tr>
 	  <tr>
 	    <td>班级：</td>
-	    <td>J161001期 </td>
+	    <%--<td>J161001期 </td>--%>
+	    <td>${classes.name} </td>
 	    <td>&nbsp;</td>
 	  </tr>
 	  <tr>
 	    <td>上次上传时间：</td>
-	    <td>2016-10-10 </td>
+	    <td>${classes.uploadTime} </td>
 	    <td>&nbsp;</td>
 	  </tr>
 	  <tr>
@@ -56,7 +58,11 @@
 	  </tr>
 	  <tr>
 	    <td colspan="3">
-	    	<input type="file" name="schedule" value="" />
+			<%--<form action="${pageContext.request.contextPath}/singleUpload.action?courseTypeId=${classes.classID}" enctype="multipart/form-data" method="post">--%>
+				<input type="file" name="photo">
+				<%--<input type="submit" value="上传">--%>
+			<%--</form>--%>
+	    	<%--<input type="file" name="schedule" value="" />--%>
 	    </td>
 	  </tr>
 	</table>
