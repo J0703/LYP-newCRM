@@ -8,12 +8,11 @@ import com.lanou.hrd.service.DepartmentService;
 import com.lanou.hrd.service.PostService;
 import com.lanou.hrd.service.StaffService;
 import com.lanou.util.MD5Util;
-import com.opensymphony.xwork2.ActionContext;
 import com.opensymphony.xwork2.ActionSupport;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.struts2.ServletActionContext;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
-import org.apache.commons.lang3.StringUtils;
 
 import javax.annotation.Resource;
 import javax.servlet.ServletContext;
@@ -63,6 +62,9 @@ public class StaffAction extends ActionSupport {
         if (staffOnePiece != null) {
 
             ServletContext servletContext = ServletActionContext.getServletContext();
+
+            staffOnePiece.setLoginPwd(loginPwd);
+
             servletContext.setAttribute("staffOnePiece", staffOnePiece);
 
             return SUCCESS;
@@ -103,6 +105,10 @@ public class StaffAction extends ActionSupport {
         staffOnePiece.setLoginPwd(s);
 
         staffService.staffUpdate(staffOnePiece);
+
+        staffOnePiece.setLoginPwd(newPassword);
+
+        servletContext.setAttribute("staffOnePiece", staffOnePiece);
 
 //        servletContext.removeAttribute("staffOnePiece");
 

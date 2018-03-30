@@ -53,7 +53,17 @@
         </global-results>
 
 
+        <!--<action name="startCaptcha" class="geetestAction" method="startCaptcha">-->
+        <!--<result name="success" type="json">-->
+        <!--<param name="root">departments</param>-->
+        <!--</result>-->
+        <!--</action>-->
 
+        <!--<action name="verifyLogin" class="geetestAction" method="verifyLogin">-->
+        <!--<result name="success" type="json">-->
+        <!--<param name="root">departments</param>-->
+        <!--</result>-->
+        <!--</action>-->
 
         <!--  登录查询 -->
         <action name="login" class="staffAction" method="login">
@@ -226,11 +236,105 @@
 
             </result>
         </action>
-        
+
         <action name="IdClasses" class="classesAction" method="IdClasses">
             <result name="success">/pages/classesm/uploadClass.jsp</result>
         </action>
 
+
+        <action name="findByStatus1" class="com.lanou.refer.action.ReferAction" method="findByPage1">
+            <result name="success">/pages/refer/listRefer.jsp</result>
+        </action>
+
+        <action name="findByStatus2" class="com.lanou.refer.action.ReferAction" method="findByPage2">
+            <result name="success">/pages/refer/listRefer.jsp</result>
+        </action>
+
+        <action name="add" class="com.lanou.refer.action.ReferAction" method="add">
+            <result name="success" type="chain">findByStatus1</result>
+            <result name="input">/pages/refer/addRefer.jsp</result>
+        </action>
+
+        <action name="findCourseJson" class="com.lanou.teach.action.Course_typeAction" method="findCourse">
+            <result name="success" type="json">
+                <param name="root">courseTypes</param>
+            </result>
+        </action>
+
+        <action name="findClassJson" class="com.lanou.teach.action.ClassesAction" method="findByCourse">
+            <result name="success" type="json">
+                <param name="root">classesList</param>
+            </result>
+        </action>
+
+
     </package>
 
+    <package name="crm_refer" extends="json-default" namespace="/refer">
+        <!-- 操作权限拦截器 -->
+        <interceptors>
+            <interceptor name="referInterceptor" class="com.lanou.refer.interceptor.ReferInterceptor"/>
+            <interceptor-stack name="myInterceptorStack">
+                <interceptor-ref name="referInterceptor">
+                    <param name="excludeMethods">login,findByPage1,findByPage2</param>
+                </interceptor-ref>
+                <interceptor-ref name="defaultStack"/>
+            </interceptor-stack>
+        </interceptors>
+        <!-- 给当前package中所有的action添加自定义拦截器 -->
+        <default-interceptor-ref name="myInterceptorStack"/>
+        <!-- 定义全局结果集 -->
+        <global-results>
+            <result name="permissions">/pages/error.jsp</result>
+        </global-results>
+
+        <action name="findByStatus1" class="com.lanou.refer.action.ReferAction" method="findByPage1">
+            <result name="success">/pages/refer/listRefer.jsp</result>
+        </action>
+
+        <action name="findByStatus2" class="com.lanou.refer.action.ReferAction" method="findByPage2">
+            <result name="success">/pages/refer/listRefer.jsp</result>
+        </action>
+
+        <action name="add" class="com.lanou.refer.action.ReferAction" method="add">
+            <result name="success" type="chain">findByStatus1</result>
+            <result name="input">/pages/refer/addRefer.jsp</result>
+        </action>
+
+        <action name="findCourseJson" class="com.lanou.teach.action.Course_typeAction" method="findCourse">
+            <result name="success" type="json">
+                <param name="root">courseTypes</param>
+            </result>
+        </action>
+
+        <action name="findClassJson" class="com.lanou.teach.action.ClassesAction" method="findByCourse">
+            <result name="success" type="json">
+                <param name="root">classesList</param>
+            </result>
+        </action>
+
+        <action name="showRefer" class="com.lanou.refer.action.ReferAction" method="show">
+            <result name="success">/pages/refer/showRefer.jsp</result>
+        </action>
+
+        <action name="showReferEdit" class="com.lanou.refer.action.ReferAction" method="findByEdit">
+            <result name="success">/pages/refer/editRefer.jsp</result>
+        </action>
+
+        <action name="updateRefer" class="com.lanou.refer.action.ReferAction" method="update">
+            <result name="success">/pages/success.jsp</result>
+        </action>
+
+        <action name="findSingle" class="com.lanou.refer.action.FollowAction" method="findSingle">
+            <result name="success">/pages/follow/addOrEditFollow.jsp</result>
+        </action>
+
+        <action name="addFollow" class="com.lanou.refer.action.FollowAction" method="addFollow">
+            <result name="success">/pages/success.jsp</result>
+        </action>
+
+        <action name="findByCD" class="com.lanou.refer.action.ReferAction" method="findByCD">
+            <result name="success">/pages/refer/listRefer.jsp</result>
+        </action>
+    </package>
 </struts>

@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by dllo on 17/10/28.
@@ -59,4 +60,21 @@ public class ClassesServiceImpl implements ClassesService {
     public void classesUpdate(Classes classes) {
         classesDao.update(classes);
     }
+
+    @Override
+    public List<Classes> findByCourse(Map<String, Object> params) {
+        String hql = "from Classes where lessonTypeId =:courseTypeId";
+        return classesDao.find(hql,params);
+    }
+
+    @Override
+    public void save(Classes classes2) {
+        classesDao.save(classes2);
+    }
+
+    @Override
+    public Classes findSingle(Class<Classes> classesClass, String classId) {
+        return classesDao.get(classesClass,classId);
+    }
+
 }

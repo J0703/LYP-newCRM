@@ -91,5 +91,9 @@ public class Course_typeServiceImpl implements Course_typeService {
         return course_typeDao.findAll(hql);
     }
 
+    @Override
+    public Course_type findSingle(Class<Course_type> courseTypeClass, String courseTypeId) {
+        return course_typeDao.get(courseTypeClass,courseTypeId);
+    }
 
 }

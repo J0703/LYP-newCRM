@@ -21,6 +21,26 @@ public class PageBean<T> {
     private List<T> beanList; // 当前页记录
     private String url; // url后面的条件
 
+    public PageBean() {
+    }
+
+    public PageBean(int pc, int tr, int ps) {
+        this.pc = pc;
+        this.tr = tr;
+        this.ps = ps;
+    }
+
+    private int startIndex; //开始索引
+
+    public int getStartIndex() {
+        int startIndex = (pc - 1) * ps;
+        return startIndex;
+    }
+
+    public void setStartIndex(int startIndex) {
+        this.startIndex = startIndex;
+    }
+
     public int getPc() {
         return pc;
     }

@@ -205,6 +205,7 @@
 </body>
 <script>
     window.onload = function () {
+
         $.post("depart", function (date) {
             var _html = "";
 

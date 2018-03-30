@@ -17,8 +17,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.*;
 import java.net.URLEncoder;
-import java.util.Calendar;
-import java.util.Date;
+import java.util.*;
 
 /**
  * Created by dllo on 17/10/28.
@@ -218,7 +217,25 @@ public class ClassesAction extends ActionSupport {
         return filename;
     }
 
+    private List<Classes> classesList;
 
+    /**
+     * 通过课程查班级
+     */
+    public String findByCourse(){
+        Map<String, Object> params = new HashMap<>();
+        params.put("courseTypeId",courseTypeId);
+        classesList = classesService.findByCourse(params);
+        return SUCCESS;
+    }
+
+    public List<Classes> getClassesList() {
+        return classesList;
+    }
+
+    public void setClassesList(List<Classes> classesList) {
+        this.classesList = classesList;
+    }
 
     public String getFileName() {
         return fileName;

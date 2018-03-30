@@ -3,16 +3,13 @@ package com.lanou.hrd.action;
 import com.lanou.hrd.domain.Crm_department;
 import com.lanou.hrd.domain.PageBean;
 import com.lanou.hrd.service.DepartmentService;
-import com.opensymphony.xwork2.ActionContext;
 import com.opensymphony.xwork2.ActionSupport;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.StringUtils;
 
 import javax.annotation.Resource;
-import javax.servlet.http.HttpServletRequest;
 import java.util.List;
-import java.util.Objects;
 
 /**
  * Created by dllo on 17/10/25.

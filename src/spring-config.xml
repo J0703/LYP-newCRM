@@ -99,8 +99,15 @@
     </bean>
 
     <bean id="course_typeDao" class="com.lanou.teach.dao.impl.Course_typeDaoImpl">
-    <!-- 给 dao层 实现类中的 sessionFactory 进行赋值 -->
-    <property name="sessionFactory" ref="sessionFactory"/>
+        <!-- 给 dao层 实现类中的 sessionFactory 进行赋值 -->
+        <property name="sessionFactory" ref="sessionFactory"/>
+    </bean>
+
+    <bean id="referDao" class="com.lanou.refer.dao.impl.ReferDaoImpl">
+        <property name="sessionFactory" ref="sessionFactory"/>
+    </bean>
+    <bean id="followDao" class="com.lanou.refer.dao.impl.FollowDaoImpl">
+        <property name="sessionFactory" ref="sessionFactory"/>
     </bean>
 
     <!--<bean id="userService" class="com.lanou.service.impl.UserServiceImpl">-->

@@ -21,4 +21,6 @@ public interface Course_typeService {
 
     List<Course_type> findAll();
 
+    Course_type findSingle(Class<Course_type> courseTypeClass, String courseTypeId);
+
 }
